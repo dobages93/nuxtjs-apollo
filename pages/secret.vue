@@ -3,12 +3,10 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   // NOTE: This tells nuxt to use the auth middleware to look for the user token
-  middleware: 'auth'
-}
+  middleware: 'auth',
+};
 </script>
 
 <style>

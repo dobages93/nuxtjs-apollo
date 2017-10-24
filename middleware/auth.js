@@ -7,4 +7,5 @@ export default function ({ store, redirect, error }) {
     });
     return redirect('/');
   }
+  return true;
 }

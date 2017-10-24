@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
@@ -11,7 +10,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home
+              <a class="nav-link" href="/">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
@@ -19,11 +18,11 @@
               <a class="nav-link" href="/about">About</a>
             </li>
             <!-- <li class="nav-item">
-                <a class="nav-link" href="#">Services</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
-              </li> -->
+                    <a class="nav-link" href="#">Services</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                  </li> -->
           </ul>
         </div>
       </div>
@@ -34,21 +33,22 @@
       <div class="row">
         <div class="col-lg-12 text-center">
           <!-- <h1 class="mt-5">A Bootstrap 4 Starter Template</h1>
-            <p class="lead">Complete with pre-defined file paths and responsive navigation!</p>
-            <ul class="list-unstyled">
-              <li>Bootstrap 4.0.0-beta</li>
-              <li>jQuery 3.2.1</li>
-            </ul> -->
-
+                <p class="lead">Complete with pre-defined file paths and responsive navigation!</p>
+                <ul class="list-unstyled">
+                  <li>Bootstrap 4.0.0-beta</li>
+                  <li>jQuery 3.2.1</li>
+                </ul> -->
           <h1>Know Your Dog!</h1>
 
           <nuxt/>
+
         </div>
       </div>
     </div>
 
   </div>
 </template>
+
 
 <style>
 body {

@@ -9,6 +9,9 @@ module.exports = {
   // required to lint *.vue files
   plugins: ["html"],
   // add your custom rules here
-  rules: {},
+  rules: {
+    "no-shadow": ["error", { "allow": ["state"] }],
+    "no-param-reassign": ["error", { "ignorePropertyModificationsFor": ["state"] }]
+  },
   globals: {}
 };

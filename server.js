@@ -1,7 +1,27 @@
-const { Nuxt, Builder } = require('nuxt');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const app = require('express')();
+// const { Nuxt, Builder } = require('nuxt');
+import { Nuxt, Builder } from 'nuxt';
+import bodyParser from 'body-parser';
+import session from 'express-session';
+import express from 'express';
+
+const app = express();
+
+// Import and Set Nuxt.js options
+const config = require('./nuxt.config.js');
+
+config.dev = !(process.env.NODE_ENV === 'production');
+
+// Init Nuxt.js
+const nuxt = new Nuxt(config);
+
+// Build only in dev mode
+if (config.dev) {
+  const builder = new Builder(nuxt);
+  builder.build();
+}
+
+// Give nuxt middleware to express
+app.use(nuxt.render);
 
 // Body parser, to access `req.body`
 app.use(bodyParser.json());
@@ -14,11 +34,11 @@ app.use(session({
   cookie: { maxAge: 60000 },
 }));
 
-// // NOTE: In Postman in the Body section choose application/json from the dropdown
-// // Submit raw json { "val": "foo" }
-// app.post('/api/test', (req, res) => {
-//   res.status(200).json({ val: req.body.val });
-// });
+// NOTE: In Postman in the Body section choose application/json from the dropdown
+// Submit raw json { "val": "foo" }
+app.post('/api/test', (req, res) => {
+  res.status(200).json({ val: req.body.val });
+});
 
 // POST `/api/login` to log in the user and add him to the `req.session.authUser`
 app.post('/api/login', (req, res) => {
@@ -36,15 +56,41 @@ app.post('/api/logout', (req, res) => {
   res.json({ ok: true });
 });
 
-// We instantiate Nuxt.js with the options
-const isProd = process.env.NODE_ENV === 'production';
-const nuxt = new Nuxt({ dev: !isProd });
-// No build in production
-if (!isProd) {
-  const builder = new Builder(nuxt);
-  builder.build();
-}
-app.use(nuxt.render);
+// app.get('*', (req, res) => {
+//   const context = { url: req.url };
+//   renderer.renderToString(context, (error, html) => {
+//     if (error) return res.send(error.stack);
+//     const {
+//       title,
+//       htmlAttrs,
+//       bodyAttrs,
+//       link,
+//       style,
+//       script,
+//       noscript,
+//       meta,
+//     } = context.meta.inject();
+//     return res.send(`
+//       <!doctype html>
+//       <html data-vue-meta-server-rendered ${htmlAttrs.text()}>
+//         <head>
+//           ${meta.text()}
+//           ${title.text()}
+//           ${link.text()}
+//           ${style.text()}
+//           ${script.text()}
+//           ${noscript.text()}
+//         </head>
+//         <body ${bodyAttrs.text()}>
+//           ${html}
+//           <script src="/assets/vendor.bundle.js"></script>
+//           <script src="/assets/client.bundle.js"></script>
+//         </body>
+//       </html>
+//     `);
+//   });
+// });
+
 const port = process.env.PORT;
 app.listen(port);
-// console.log(`Server is listening on http://localhost:${port}`);
+console.log(`Server is listening on http://localhost:${port}`);
