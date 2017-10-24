@@ -1,8 +1,9 @@
-// const { Nuxt, Builder } = require('nuxt');
 import { Nuxt, Builder } from 'nuxt';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import express from 'express';
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
+import schema from './graphql/schema';
 
 const app = express();
 
@@ -56,41 +57,16 @@ app.post('/api/logout', (req, res) => {
   res.json({ ok: true });
 });
 
-// app.get('*', (req, res) => {
-//   const context = { url: req.url };
-//   renderer.renderToString(context, (error, html) => {
-//     if (error) return res.send(error.stack);
-//     const {
-//       title,
-//       htmlAttrs,
-//       bodyAttrs,
-//       link,
-//       style,
-//       script,
-//       noscript,
-//       meta,
-//     } = context.meta.inject();
-//     return res.send(`
-//       <!doctype html>
-//       <html data-vue-meta-server-rendered ${htmlAttrs.text()}>
-//         <head>
-//           ${meta.text()}
-//           ${title.text()}
-//           ${link.text()}
-//           ${style.text()}
-//           ${script.text()}
-//           ${noscript.text()}
-//         </head>
-//         <body ${bodyAttrs.text()}>
-//           ${html}
-//           <script src="/assets/vendor.bundle.js"></script>
-//           <script src="/assets/client.bundle.js"></script>
-//         </body>
-//       </html>
-//     `);
-//   });
-// });
-
 const port = process.env.PORT;
 app.listen(port);
 console.log(`Server is listening on http://localhost:${port}`);
+
+const myGraphQLSchema = schema; // ... define or import your schema here!
+const PORT = Number.parseInt(port) + 1;
+const gqApp = express();
+
+gqApp.use('/graphql', bodyParser.json(), graphqlExpress({ schema: myGraphQLSchema }));
+gqApp.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' })); // if you want GraphiQL enabled
+
+gqApp.listen(PORT);
+console.log(`GraphQL Server is listening on http://localhost:${PORT}`);
