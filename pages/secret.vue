@@ -5,7 +5,7 @@
 <script>
 export default {
   // NOTE: This tells nuxt to use the auth middleware to look for the user token
-  middleware: 'auth',
+  middleware: "auth"
 };
 </script>
 

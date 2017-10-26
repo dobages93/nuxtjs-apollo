@@ -31,20 +31,20 @@ export default {
   data() {
     return {
       formError: null,
-      formUsername: '',
-      formPassword: '',
+      formUsername: "",
+      formPassword: ""
     };
   },
 
   methods: {
     async login() {
       try {
-        await this.$store.dispatch('login', {
+        await this.$store.dispatch("login", {
           username: this.formUsername,
-          password: this.formPassword,
+          password: this.formPassword
         });
-        this.formUsername = '';
-        this.formPassword = '';
+        this.formUsername = "";
+        this.formPassword = "";
         this.formError = null;
       } catch (e) {
         this.formError = e.message;
@@ -53,12 +53,12 @@ export default {
 
     async logout() {
       try {
-        await this.$store.dispatch('logout');
+        await this.$store.dispatch("logout");
       } catch (e) {
         this.formError = e.message;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

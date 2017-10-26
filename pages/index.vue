@@ -11,21 +11,40 @@
 </template>
 
 <script>
-import axios from 'axios';
-import debug from 'debug';
+import debug from "debug";
+// import breeds from '../graphql/queries/breeds.gql';
+import gql from "graphql-tag";
 
-const logger = debug('index');
+// window.localStorage.debug = '*';
+
+const logger = debug("dg:index");
+logger("test logger output");
 
 export default {
-  async asyncData() {
-    const { data } = await axios.get('https://dog.ceo/api/breeds/list');
+  // async asyncData() {
+  //   const { data } = await axios.get('https://dog.ceo/api/breeds/list');
+  //   logger('breeds: %o', data.message);
+  //   return {
+  //     breeds: data.message,
+  //   };
+  // },
+  apollo: {
+    breeds: {
+      query: gql`
+        {
+          breeds
+        }
+      `
+    }
+  },
+  data() {
     return {
-      breeds: data.message,
+      breeds: []
     };
   },
   mounted() {
-    logger('mounted index');
-  },
+    logger("mounted index page");
+  }
 };
 
 // export default {

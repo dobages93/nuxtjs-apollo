@@ -3,7 +3,8 @@ import { resolvers } from "./resolvers";
 
 const typeDefs = `
 type Query {
-  testString: String
+  testString: String,
+  breeds: [String]
 }
 `;
 

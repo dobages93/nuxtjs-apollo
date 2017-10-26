@@ -1,11 +1,11 @@
-export default function ({ store, redirect, error }) {
+export default function({ store, redirect, error }) {
   // If user not connected, redirect to /
   if (!store.state.authUser) {
     error({
-      message: 'You are not connected',
-      statusCode: 403,
+      message: "You are not connected",
+      statusCode: 403
     });
-    return redirect('/');
+    return redirect("/");
   }
   return true;
 }

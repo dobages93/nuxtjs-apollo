@@ -30,7 +30,17 @@ module.exports = {
   /*
   ** Add modules
   */
-  modules: ['@nuxtjs/bootstrap-vue'],
+  modules: ['@nuxtjs/bootstrap-vue', '@nuxtjs/apollo'],
+  // Give apollo module options
+  apollo: {
+    networkInterfaces: {
+      default: '~/graphql/apollo.js'
+    }
+  },
+  /*
+  ** Add plugins
+  */
+  // plugins: ['~/plugins/apollo'],
   /*
   ** Build configuration
   */

@@ -2,6 +2,7 @@ import { Nuxt, Builder } from 'nuxt';
 import bodyParser from 'body-parser';
 import session from 'express-session';
 import express from 'express';
+import cors from 'cors';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 import schema from './graphql/schema';
 
@@ -64,6 +65,13 @@ console.log(`Server is listening on http://localhost:${port}`);
 const myGraphQLSchema = schema; // ... define or import your schema here!
 const PORT = Number.parseInt(port) + 1;
 const gqApp = express();
+
+// enable cors
+const corsOptions = {
+  origin: 'http://localhost:4000',
+  credentials: true, // <-- REQUIRED backend setting
+};
+gqApp.use(cors(corsOptions));
 
 gqApp.use('/graphql', bodyParser.json(), graphqlExpress({ schema: myGraphQLSchema }));
 gqApp.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' })); // if you want GraphiQL enabled
