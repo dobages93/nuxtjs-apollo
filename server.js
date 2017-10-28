@@ -60,8 +60,10 @@ app.post('/api/logout', (req, res) => {
 
 const port = process.env.PORT;
 app.listen(port);
-console.log(`Server is listening on http://localhost:${port}`);
+console.log(`Express server is listening on http://localhost:${port}`);
 
+
+// Setup GraphQL server
 const myGraphQLSchema = schema; // ... define or import your schema here!
 const PORT = Number.parseInt(port) + 1;
 const gqApp = express();
@@ -77,4 +79,4 @@ gqApp.use('/graphql', bodyParser.json(), graphqlExpress({ schema: myGraphQLSchem
 gqApp.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' })); // if you want GraphiQL enabled
 
 gqApp.listen(PORT);
-console.log(`GraphQL Server is listening on http://localhost:${PORT}`);
+console.log(`GraphQL server is listening on http://localhost:${PORT}`);

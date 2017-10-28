@@ -2,8 +2,8 @@
   <main>
     <section class="container">
       <div>
-        <a v-bind:href="'/dogs/' + breed" v-for="breed in breeds" :key="breed" class="breed">
-          {{breed}}
+        <a v-bind:href="'/dogs/' + dogBreed.breed" v-for="dogBreed in breeds" :key="dogBreed._id" class="breed">
+          {{dogBreed.breed}}
         </a>
       </div>
     </section>
@@ -14,35 +14,37 @@
 import debug from "debug";
 // import breeds from '../graphql/queries/breeds.gql';
 import gql from "graphql-tag";
-
+import client from "../plugins/apollo";
 // window.localStorage.debug = '*';
 
 const logger = debug("dg:index");
 logger("test logger output");
 
 export default {
-  // async asyncData() {
-  //   const { data } = await axios.get('https://dog.ceo/api/breeds/list');
-  //   logger('breeds: %o', data.message);
-  //   return {
-  //     breeds: data.message,
-  //   };
-  // },
-  apollo: {
-    breeds: {
+  async asyncData() {
+    console.log("-- asyncData called --");
+    const result = await client.query({
       query: gql`
-        {
-          breeds
+        query {
+          Breeds {
+            _id
+            breed
+          }
         }
       `
-    }
-  },
-  data() {
+    });
+    console.log("-- Breeds:", JSON.stringify(result));
     return {
-      breeds: []
+      breeds: result.data.Breeds
     };
   },
+  // data() {
+  //   return {
+  //     breeds: []
+  //   };
+  // },
   mounted() {
+    console.log("-- mounted called --");
     logger("mounted index page");
   }
 };

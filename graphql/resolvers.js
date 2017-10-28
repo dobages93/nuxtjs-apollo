@@ -18,7 +18,11 @@ export const resolvers = {
   Query: {
     testString: () => "resolved test string",
 
-    breeds: async () => (await Dogs.find({}).toArray()).map(o => o.breed),
+    Breeds: async () => {
+      const dogs = await Dogs.find({}).toArray();
+      console.log("dogs:", dogs);
+      return dogs.map(prepare);
+    },
     // breeds: () => [
     //   'affenpinscher',
     //   'african',

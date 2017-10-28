@@ -1,22 +1,11 @@
-// import Vue from 'vue';
-// import { ApolloClient, createBatchingNetworkInterface } from 'apollo-client';
-// import VueApollo from 'vue-apollo';
+import fetch from "node-fetch";
+import { HttpLink } from "apollo-link-http";
+import ApolloClient from "apollo-client";
+import { InMemoryCache } from "apollo-cache-inmemory";
 
-// // Create the apollo client
-// const apolloClient = new ApolloClient({
-//   networkInterface: createBatchingNetworkInterface({
-//     uri: 'http://localhost:4001/graphql',
-//   }),
-//   connectToDevTools: true,
-// });
+const client = new ApolloClient({
+  link: new HttpLink({ uri: "http://localhost:4001/graphql", fetch }),
+  cache: new InMemoryCache(),
+});
 
-// const apolloProvider = new VueApollo({
-//   defaultClient: apolloClient,
-// });
-
-// // Install the vue plugin
-// Vue.use(VueApollo);
-
-// export default ({ app }) => {
-//   app.apolloProvider = apolloProvider;
-// };
+export default client;
