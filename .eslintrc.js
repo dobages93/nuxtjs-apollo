@@ -18,6 +18,7 @@ module.exports = {
     "no-shadow": ["error", { "allow": ["state"] }],
     "no-param-reassign": ["error", { "ignorePropertyModificationsFor": ["state"] }],
     // "quotes": ["error", "double"]
+    "import/prefer-default-export": 0
   },
   globals: {}
 };
