@@ -6,6 +6,7 @@
           {{dogBreed.breed}}
         </a>
       </div>
+      <new-dog></new-dog>
     </section>
   </main>
 </template>
@@ -15,14 +16,18 @@ import debug from "debug";
 // import breeds from '../graphql/queries/breeds.gql';
 import gql from "graphql-tag";
 import client from "../plugins/apollo";
-// window.localStorage.debug = '*';
+import NewDog from "@/components/NewDog";
 
 const logger = debug("dg:index");
 logger("test logger output");
 
 export default {
+  components: {
+    NewDog
+  },
   async asyncData() {
-    console.log("-- asyncData called --");
+    // console.log("-- asyncData called --");
+    logger("-- asyncData called --");
     const result = await client.query({
       query: gql`
         query {
@@ -33,7 +38,8 @@ export default {
         }
       `
     });
-    console.log("-- Breeds:", JSON.stringify(result));
+    // console.log("-- Breeds:", JSON.stringify(result));
+    logger("-- Breeds:", JSON.stringify(result));
     return {
       breeds: result.data.Breeds
     };
@@ -44,7 +50,7 @@ export default {
   //   };
   // },
   mounted() {
-    console.log("-- mounted called --");
+    // console.log("-- mounted called --");
     logger("mounted index page");
   }
 };

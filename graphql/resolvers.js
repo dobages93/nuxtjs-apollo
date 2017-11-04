@@ -15,13 +15,13 @@ const connectToMongo = async () => {
 connectToMongo();
 
 export const resolvers = {
-  Query: {
+  RootQuery: {
     testString: () => "resolved test string",
 
     Breeds: async () => {
       const dogs = await Dogs.find({}).toArray();
       console.log("dogs:", dogs);
-      return dogs.map(prepare);
+      return dogs.filter(d => d.breed).map(prepare);
     },
     // breeds: () => [
     //   'affenpinscher',
@@ -105,5 +105,27 @@ export const resolvers = {
     //   'whippet',
     //   'wolfhound',
     // ]
+  },
+  RootMutation: {
+    createBreed(obj, args) {
+      // console.log("createBreed called");
+      // console.log(`args: ${JSON.stringify(args)}`);
+      const { input } = args;
+      if (input) {
+        console.log(`createBreed mutation for ${input}`);
+        const res = Dogs.insert({ _id: new ObjectId(), breed: input });
+        if (res) {
+          return true;
+        }
+      }
+      return false;
+    },
+    // clearBreeds() {
+    //   const res = Dogs.remove({ breed: null }, { multi: true });
+    //   if (res) {
+    //     return true;
+    //   }
+    //   return false;
+    // },
   },
 };
