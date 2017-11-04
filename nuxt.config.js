@@ -34,7 +34,7 @@ module.exports = {
   /*
   ** Add plugins
   */
-  plugins: ['~/plugins/apollo.js'],
+  plugins: [ { ssr: false, src: "~/plugins/client.js" }, "~/plugins/apollo.js"],
   /*
   ** Build configuration
   */
