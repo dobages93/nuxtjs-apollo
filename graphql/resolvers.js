@@ -1,27 +1,36 @@
-import { MongoClient, ObjectId } from "mongodb";
+// import { MongoClient, ObjectId } from "mongodb";
+import mongoose from "mongoose";
 
 const MONGO_URL = "mongodb://localhost:27017/nuxt-dogs";
-let Dogs = null;
+mongoose.connect(MONGO_URL);
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
+db.once("open", () => {
+  // we'er connected!
+  console.log("mongo connected");
+});
 
-const prepare = o => {
-  o._id = o._id.toString();
-  return o;
-};
+const DogSchema = new mongoose.Schema({ breed: String, __v: Number, v: Number });
+const Dogs = mongoose.model("dogs", DogSchema);
 
-const connectToMongo = async () => {
-  const db = await MongoClient.connect(MONGO_URL);
-  Dogs = db.collection("dogs");
-};
-connectToMongo();
+// const prepare = o => {
+//   o._id = o._id.toString();
+//   return o;
+// };
 
 export const resolvers = {
   RootQuery: {
     testString: () => "resolved test string",
 
     Breeds: async () => {
-      const dogs = await Dogs.find({}).toArray();
+      const dogs = await Dogs.find({});
       console.log("dogs:", dogs);
-      return dogs.filter(d => d.breed).map(prepare);
+      return dogs.filter(d => d.breed).map(d => {
+        // NOTE: GraphQL cmplains about fields that start with __ so change it
+        d.v = d.__v;
+        delete d.__v;
+        return d;
+      });
     },
     // breeds: () => [
     //   'affenpinscher',
@@ -108,24 +117,21 @@ export const resolvers = {
   },
   RootMutation: {
     createBreed(obj, args) {
-      // console.log("createBreed called");
-      // console.log(`args: ${JSON.stringify(args)}`);
       const { input } = args;
       if (input) {
-        console.log(`createBreed mutation for ${input}`);
-        const res = Dogs.insert({ _id: new ObjectId(), breed: input });
-        if (res) {
-          return true;
+        console.log(`createBreed mutation for: ${input}`);
+        try {
+          const dog = new Dogs({ breed: input, __v: 0 });
+          dog.save();
+          // console.log(`dog: ${JSON.stringify(dog)}`);
+          dog.v = dog.__v;
+          console.log(`modified dog: ${JSON.stringify(dog)}`);
+          return { _id: dog._id, breed: dog.breed, v: dog.v };
+        } catch (error) {
+          console.log(`Dog save error: ${error.message}`);
+          return false;
         }
       }
-      return false;
     },
-    // clearBreeds() {
-    //   const res = Dogs.remove({ breed: null }, { multi: true });
-    //   if (res) {
-    //     return true;
-    //   }
-    //   return false;
-    // },
   },
 };

@@ -49,6 +49,25 @@
   </div>
 </template>
 
+<script>
+import client from "../plugins/apollo";
+
+export default {
+  head() {
+    return {
+      script: [
+        {
+          hid: "apolloState",
+          innerHTML: `window.__APOLLO_STATE__=${JSON.stringify(client.cache.extract())}`,
+          type: "text/javascript"
+        }
+      ],
+      __dangerouslyDisableSanitizers: ['script']
+    };
+  }
+};
+</script>
+
 
 <style>
 body {

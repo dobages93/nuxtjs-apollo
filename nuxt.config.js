@@ -34,7 +34,7 @@ module.exports = {
   /*
   ** Add plugins
   */
-  plugins: [ { ssr: false, src: "~/plugins/client.js" }, "~/plugins/apollo.js"],
+  plugins: [ "~/plugins/apollo.js", { ssr: false, src: "~/plugins/client.js" }],
   /*
   ** Build configuration
   */
@@ -43,6 +43,11 @@ module.exports = {
     ** Run ESLint on save
     */
     extend(config, ctx) {
+      config.module.rules.push({
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader'
+      });
       if (ctx.dev && ctx.isClient) {
         // config.module.rules.push({
         //   enforce: "pre",

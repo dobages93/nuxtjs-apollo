@@ -8,7 +8,8 @@ import gql from "graphql-tag";
 const typeDefs = gql`
   type Dog {
     _id: String
-    breed: String
+    breed: String,
+    v: Int
   }
 
   type RootQuery {
@@ -17,7 +18,7 @@ const typeDefs = gql`
   }
 
   type RootMutation {
-    createBreed(input: String!): Boolean
+    createBreed(input: String!): Dog
   }
 
   input DogBreedInput {

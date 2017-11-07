@@ -1,3 +1,7 @@
-{
-  breeds
+query {
+  Breeds {
+    _id
+    breed
+    v
+  }
 }

@@ -4,6 +4,7 @@
       <div>
         <a v-bind:href="'/dogs/' + dogBreed.breed" v-for="dogBreed in breeds" :key="dogBreed._id" class="breed">
           {{dogBreed.breed}}
+          <span class="dev-info">{{dogBreed.v}}</span>
         </a>
       </div>
       <new-dog></new-dog>
@@ -15,7 +16,8 @@
 import debug from "debug";
 // import breeds from '../graphql/queries/breeds.gql';
 import gql from "graphql-tag";
-import client from "../plugins/apollo";
+import client from "@/plugins/apollo";
+import ALL_BREEDS_QUERY from "@/graphql/queries/breeds.gql";
 import NewDog from "@/components/NewDog";
 
 const logger = debug("dg:index");
@@ -25,33 +27,50 @@ export default {
   components: {
     NewDog
   },
-  async asyncData() {
-    // console.log("-- asyncData called --");
-    logger("-- asyncData called --");
-    const result = await client.query({
-      query: gql`
-        query {
-          Breeds {
-            _id
-            breed
-          }
-        }
-      `
+  // NOTE: This will poll the query against the server and update the breeds reactive var
+  // created() {
+  //   const observableQuery = client.watchQuery({ query: BREEDS, pollInterval: 1000 });
+  //   observableQuery.subscribe({
+  //     next: ({ data }) => {
+  //       logger("next called");
+  //       this.$set(this, "breeds", data.Breeds);
+  //     }
+  //   });
+  // },
+  created() {
+    const observableQuery = client.watchQuery({
+      query: ALL_BREEDS_QUERY
     });
-    // console.log("-- Breeds:", JSON.stringify(result));
-    logger("-- Breeds:", JSON.stringify(result));
+    observableQuery.subscribe({
+      next: ({ data }) => {
+        logger("next called");
+        this.$set(this, "breeds", data.Breeds);
+      }
+    });
+  },
+
+  data() {
     return {
-      breeds: result.data.Breeds
+      breeds: []
     };
   },
-  // data() {
+
+  // query only runs once so doesn't get updates from mutations
+  // async asyncData() {
+  //   const result = await client.query({
+  //     query: ALL_BREEDS_QUERY
+  //   });
   //   return {
-  //     breeds: []
+  //     breeds: result.data.Breeds
   //   };
   // },
+
   mounted() {
     // console.log("-- mounted called --");
     logger("mounted index page");
+    window.c = client;
+    window.gql = gql;
+    window.b = ALL_BREEDS_QUERY;
   }
 };
 
@@ -83,12 +102,6 @@ export default {
 //   destroyed() {
 //     // Called after a Vue instance has been destroyed
 //   },
-//   data() {
-//     return {
-//       currentDate: `The date is ${(new Date()).toDateString()}`,
-//       currentTime: `The time is ${(new Date()).toTimeString()}`,
-//     };
-//   },
 // };
 </script>
 
@@ -99,5 +112,8 @@ export default {
   padding: 0.25em;
   margin: 0.25em;
   line-height: 2.5em;
+}
+.dev-info {
+  display: none;
 }
 </style>
