@@ -27,23 +27,14 @@ export default {
   components: {
     NewDog
   },
-  // NOTE: This will poll the query against the server and update the breeds reactive var
-  // created() {
-  //   const observableQuery = client.watchQuery({ query: BREEDS, pollInterval: 1000 });
-  //   observableQuery.subscribe({
-  //     next: ({ data }) => {
-  //       logger("next called");
-  //       this.$set(this, "breeds", data.Breeds);
-  //     }
-  //   });
-  // },
+
   created() {
     const observableQuery = client.watchQuery({
       query: ALL_BREEDS_QUERY
     });
     observableQuery.subscribe({
       next: ({ data }) => {
-        logger("next called");
+        // logger("next called");
         this.$set(this, "breeds", data.Breeds);
       }
     });
@@ -54,16 +45,6 @@ export default {
       breeds: []
     };
   },
-
-  // query only runs once so doesn't get updates from mutations
-  // async asyncData() {
-  //   const result = await client.query({
-  //     query: ALL_BREEDS_QUERY
-  //   });
-  //   return {
-  //     breeds: result.data.Breeds
-  //   };
-  // },
 
   mounted() {
     // console.log("-- mounted called --");

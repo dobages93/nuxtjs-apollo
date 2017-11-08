@@ -1,15 +1,16 @@
-import {
-  makeExecutableSchema,
-  addMockFunctionsToSchema,
-} from "graphql-tools";
-import { resolvers } from "./resolvers";
+import { makeExecutableSchema, addMockFunctionsToSchema } from "graphql-tools";
 import gql from "graphql-tag";
+import { resolvers } from "./resolvers";
 
 const typeDefs = gql`
+  scalar Date
+
   type Dog {
-    _id: String
-    breed: String,
+    _id: String!
+    breed: String
     v: Int
+    created: Date
+    updated: Date
   }
 
   type RootQuery {

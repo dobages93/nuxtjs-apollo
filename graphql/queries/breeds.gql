@@ -3,5 +3,7 @@ query {
     _id
     breed
     v
+    created
+    updated
   }
 }

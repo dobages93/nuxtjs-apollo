@@ -32,6 +32,9 @@ export default {
             createBreed(input: $input) {
               _id
               breed
+              v
+              created
+              updated
             }
           }
         `,
@@ -43,17 +46,15 @@ export default {
             _id: -1,
             breed: breed,
             v: 0,
+            created: (new Date()).toISOString(),
+            updated: null
           }
         },
         update: (proxy, { data: { createBreed } }) => {
           try {
+            logger(`createBreed: ${JSON.stringify(createBreed)}`);
             // Read the data from our cache for this query
             const data = proxy.readQuery({ query: ALL_BREEDS_QUERY });
-
-            // WTF?! No v property comes through?
-            if (!createBreed.v) {
-              createBreed.v = 0;
-            }
 
             // Add our dog from the mutation to the end
             data.Breeds.push(createBreed);
@@ -62,7 +63,6 @@ export default {
             proxy.writeQuery({ query: ALL_BREEDS_QUERY, data });
           } catch (error) {
             logger(`error: ${error}`);
-            logger("Not updating the store - BREEDS not found");
           }
         }
       });
