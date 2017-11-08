@@ -30,7 +30,8 @@ module.exports = {
   /*
   ** Add modules
   */
-  modules: ["@nuxtjs/bootstrap-vue"],
+  // modules: ["@nuxtjs/bootstrap-vue"],
+  modules: ["bootstrap-vue/nuxt"],
   /*
   ** Add plugins
   */
