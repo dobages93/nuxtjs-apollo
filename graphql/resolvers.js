@@ -29,13 +29,13 @@ export const resolvers = {
 
     Breeds: async () => {
       const dogs = await Dogs.find({}).lean();
-      console.log("dogs:", dogs);
+      // console.log("dogs:", dogs);
       return dogs;
     },
   },
 
   RootMutation: {
-    createBreed(obj, args) {
+    async createBreed(obj, args) {
       const { input } = args;
       if (input) {
         console.log(`createBreed mutation input: ${input}`);

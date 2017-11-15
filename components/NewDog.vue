@@ -39,6 +39,7 @@ export default {
           }
         `,
         variables: { input: breed },
+        // refetchQueries: [{ query: ALL_BREEDS_QUERY }],
         optimisticResponse: {
           __typename: 'Mutation',
           createBreed: {
@@ -61,6 +62,7 @@ export default {
 
             // Write our data back to the cache
             proxy.writeQuery({ query: ALL_BREEDS_QUERY, data });
+            return proxy.readQuery({ query: ALL_BREEDS_QUERY });
           } catch (error) {
             logger(`error: ${error}`);
           }

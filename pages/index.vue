@@ -29,8 +29,13 @@ export default {
   },
 
   created() {
+    // NOTE: a fetchPolicy of cache-and-network requires an initial value in
+    // the cache otherwise you get an error. So you have to do a writeQuery
+    // to the cache and set an initial value.
+    // client.cache.writeQuery({ query: ALL_BREEDS_QUERY, data: { Breeds: [] } });
     const observableQuery = client.watchQuery({
-      query: ALL_BREEDS_QUERY
+      query: ALL_BREEDS_QUERY,
+      fetchPolicy: "network-only"
     });
     observableQuery.subscribe({
       next: ({ data }) => {

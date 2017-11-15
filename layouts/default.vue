@@ -54,6 +54,8 @@ import client from "../plugins/apollo";
 
 export default {
   head() {
+    // console.log("layout head generation");
+    // console.log(JSON.stringify(client.cache.extract()));
     return {
       script: [
         {

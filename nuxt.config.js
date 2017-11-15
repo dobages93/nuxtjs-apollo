@@ -35,7 +35,11 @@ module.exports = {
   /*
   ** Add plugins
   */
-  plugins: [ "~/plugins/apollo.js", { ssr: false, src: "~/plugins/client.js" }],
+  plugins: [
+    "~/plugins/apollo.js",
+    { ssr: false, src: "~/plugins/cache.js" },
+    { ssr: false, src: "~/plugins/debug.js" },
+  ],
   /*
   ** Build configuration
   */
@@ -47,7 +51,7 @@ module.exports = {
       config.module.rules.push({
         test: /\.(graphql|gql)$/,
         exclude: /node_modules/,
-        loader: 'graphql-tag/loader'
+        loader: "graphql-tag/loader",
       });
       if (ctx.dev && ctx.isClient) {
         // config.module.rules.push({
