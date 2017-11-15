@@ -1,6 +1,7 @@
 # nuxt-demo1
 
-> Nuxt.js project
+My Nuxt.js playground project. I have added a GraphQL server and apollo-client
+v2 to communicate with it.
 
 ## Build Setup
 
@@ -8,7 +9,7 @@
 # install dependencies
 $ npm install # Or yarn install
 
-# serve with hot reload at localhost:3000
+# serve with hot reload at localhost:4000
 $ npm run dev
 
 # build for production and launch server
