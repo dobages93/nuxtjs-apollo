@@ -1,3 +1,3 @@
-import client from "../plugins/apollo";
+// import client from "../plugins/apollo";
 
-client.cache.restore(window.__APOLLO_STATE__);
+// client.cache.restore(window.__APOLLO_STATE__);

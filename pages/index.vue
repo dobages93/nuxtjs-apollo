@@ -14,35 +14,59 @@
 
 <script>
 import debug from "debug";
-// import breeds from '../graphql/queries/breeds.gql';
 import gql from "graphql-tag";
-import client from "@/plugins/apollo";
+// import client from "@/plugins/apollo";
 import ALL_BREEDS_QUERY from "@/graphql/queries/breeds.gql";
 import NewDog from "@/components/NewDog";
 
 const logger = debug("dg:index");
 logger("test logger output");
 
+// const ALL_BREEDS_QUERY = gql`
+//   {
+//     Breeds {
+//       _id
+//       breed
+//       v
+//       created
+//       updated
+//     }
+//   }
+// `;
+
 export default {
   components: {
     NewDog
   },
 
-  created() {
-    // NOTE: a fetchPolicy of cache-and-network requires an initial value in
-    // the cache otherwise you get an error. So you have to do a writeQuery
-    // to the cache and set an initial value.
-    // client.cache.writeQuery({ query: ALL_BREEDS_QUERY, data: { Breeds: [] } });
-    const observableQuery = client.watchQuery({
+  // created() {
+  //   // NOTE: a fetchPolicy of cache-and-network requires an initial value in
+  //   // the cache otherwise you get an error. So you have to do a writeQuery
+  //   // to the cache and set an initial value.
+  //   // client.cache.writeQuery({ query: ALL_BREEDS_QUERY, data: { Breeds: [] } });
+  //   const observableQuery = client.watchQuery({
+  //     query: ALL_BREEDS_QUERY,
+  //     fetchPolicy: "network-only"
+  //   });
+  //   observableQuery.subscribe({
+  //     next: ({ data }) => {
+  //       // logger("next called");
+  //       this.$set(this, "breeds", data.Breeds);
+  //     }
+  //   });
+  // },
+
+  apollo: {
+    breeds: {
       query: ALL_BREEDS_QUERY,
-      fetchPolicy: "network-only"
-    });
-    observableQuery.subscribe({
-      next: ({ data }) => {
-        // logger("next called");
-        this.$set(this, "breeds", data.Breeds);
+      // We use a custom update callback because
+      // the field names don't match.
+      // By default, the 'breeds' attribute would be on the 'data' result object.
+      // Here we know the result is in the 'Breeds' attribute.
+      update(data) {
+        return data.Breeds;
       }
-    });
+    }
   },
 
   data() {
@@ -54,7 +78,7 @@ export default {
   mounted() {
     // console.log("-- mounted called --");
     logger("mounted index page");
-    window.c = client;
+    // window.c = client;
     window.gql = gql;
     window.b = ALL_BREEDS_QUERY;
   }

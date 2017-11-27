@@ -31,12 +31,16 @@ module.exports = {
   ** Add modules
   */
   // modules: ["@nuxtjs/bootstrap-vue"],
-  modules: ["bootstrap-vue/nuxt"],
+  modules: ["bootstrap-vue/nuxt", "@nuxtjs/apollo"],
+  apollo: {
+    clientConfigs: {
+      default: '~/plugins/apollo.js'
+    }
+  },
   /*
   ** Add plugins
   */
   plugins: [
-    "~/plugins/apollo.js",
     { ssr: false, src: "~/plugins/cache.js" },
     { ssr: false, src: "~/plugins/debug.js" },
   ],
@@ -48,11 +52,11 @@ module.exports = {
     ** Run ESLint on save
     */
     extend(config, ctx) {
-      config.module.rules.push({
-        test: /\.(graphql|gql)$/,
-        exclude: /node_modules/,
-        loader: "graphql-tag/loader",
-      });
+      // config.module.rules.push({
+      //   test: /\.(graphql|gql)$/,
+      //   exclude: /node_modules/,
+      //   loader: "graphql-tag/loader",
+      // });
       if (ctx.dev && ctx.isClient) {
         // config.module.rules.push({
         //   enforce: "pre",
