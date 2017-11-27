@@ -13,9 +13,7 @@
 <script>
 import debug from "debug";
 import gql from "graphql-tag";
-// import client from "@/plugins/apollo";
 import ALL_BREEDS_QUERY from "@/graphql/queries/breeds.gql";
-
 const logger = debug("dg:new-dog");
 
 export default {
@@ -24,51 +22,60 @@ export default {
     submit(event) {
       event.preventDefault();
       logger("submit form");
-      // const target = document.querySelector("#breed");
-      // const breed = target.value;
-      // client.mutate({
-      //   mutation: gql`
-      //     mutation createBreed($input: String!) {
-      //       createBreed(input: $input) {
-      //         _id
-      //         breed
-      //         v
-      //         created
-      //         updated
-      //       }
-      //     }
-      //   `,
-      //   variables: { input: breed },
-      //   // refetchQueries: [{ query: ALL_BREEDS_QUERY }],
-      //   optimisticResponse: {
-      //     __typename: 'Mutation',
-      //     createBreed: {
-      //       __typename: 'Dog',
-      //       _id: -1,
-      //       breed: breed,
-      //       v: 0,
-      //       created: (new Date()).toISOString(),
-      //       updated: null
-      //     }
-      //   },
-      //   update: (proxy, { data: { createBreed } }) => {
-      //     try {
-      //       logger(`createBreed: ${JSON.stringify(createBreed)}`);
-      //       // Read the data from our cache for this query
-      //       const data = proxy.readQuery({ query: ALL_BREEDS_QUERY });
+      const target = document.querySelector("#breed");
+      const breed = target.value;
+      this.$apollo.mutate({
+        mutation: gql`
+           mutation createBreed($input: String!) {
+             createBreed(input: $input) {
+               _id
+               breed
+               v
+               created
+               updated
+             }
+           }
+        `,
+        variables: {
+          input: breed
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createBreed: {
+            __typename: 'Dog',
+            _id: -1,
+            breed: breed,
+            v: 0,
+            created: (new Date()).toISOString(),
+            updated: null
+          }
+        },
+        update: (proxy, { data: { createBreed } }) => {
+          try {
+            logger(`createBreed: ${JSON.stringify(createBreed)}`);
+            // Read the data from our cache for this query
+            const data = proxy.readQuery({ query: ALL_BREEDS_QUERY });
 
-      //       // Add our dog from the mutation to the end
-      //       data.Breeds.push(createBreed);
+            // Add our dog from the mutation to the end
+            data.Breeds.push(createBreed);
 
-      //       // Write our data back to the cache
-      //       proxy.writeQuery({ query: ALL_BREEDS_QUERY, data });
-      //       return proxy.readQuery({ query: ALL_BREEDS_QUERY });
-      //     } catch (error) {
-      //       logger(`error: ${error}`);
-      //     }
-      //   }
-      // });
-      target.value = null;
+            // Write our data back to the cache
+            proxy.writeQuery({ query: ALL_BREEDS_QUERY, data });
+            return proxy.readQuery({ query: ALL_BREEDS_QUERY });
+          } catch (error) {
+            logger(`error: ${error}`);
+          }
+        }
+      }).then((data) => {
+        // Result
+        logger("new dog mutation result: %j", data);
+        target.value = null;
+      }).catch((error) => {
+        // Error
+        console.error(error)
+        // We restore the initial user input
+        target.value = breed
+      });
     }
   }
 };

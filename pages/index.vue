@@ -22,17 +22,6 @@ import NewDog from "@/components/NewDog";
 const logger = debug("dg:index");
 logger("test logger output");
 
-// const ALL_BREEDS_QUERY = gql`
-//   {
-//     Breeds {
-//       _id
-//       breed
-//       v
-//       created
-//       updated
-//     }
-//   }
-// `;
 
 export default {
   components: {
@@ -40,20 +29,6 @@ export default {
   },
 
   // created() {
-  //   // NOTE: a fetchPolicy of cache-and-network requires an initial value in
-  //   // the cache otherwise you get an error. So you have to do a writeQuery
-  //   // to the cache and set an initial value.
-  //   // client.cache.writeQuery({ query: ALL_BREEDS_QUERY, data: { Breeds: [] } });
-  //   const observableQuery = client.watchQuery({
-  //     query: ALL_BREEDS_QUERY,
-  //     fetchPolicy: "network-only"
-  //   });
-  //   observableQuery.subscribe({
-  //     next: ({ data }) => {
-  //       // logger("next called");
-  //       this.$set(this, "breeds", data.Breeds);
-  //     }
-  //   });
   // },
 
   apollo: {
@@ -76,43 +51,9 @@ export default {
   },
 
   mounted() {
-    // console.log("-- mounted called --");
     logger("mounted index page");
-    // window.c = client;
-    window.gql = gql;
-    window.b = ALL_BREEDS_QUERY;
   }
 };
-
-// export default {
-//   created() {
-//     // Called synchronously after the instance is created.
-//     // eslint-disable-next-line no-unused-vars
-//     const int = setInterval(() => {
-//       this.currentTime = `The time is ${(new Date()).toTimeString()}`;
-//     }, 1000 * 1);
-//     setTimeout(() => {
-//       clearInterval(int);
-//     }, 1000 * 30);
-//   },
-//   mounted() {
-//     // Called after the instance has been mounted
-//     // //  If you want to wait until the entire view has been rendered, you can use vm.$nextTick
-//     // //  inside of mounted
-//     // this.$nextTick(function() {
-//     //   // Code that will run only after the
-//     //   // entire view has been rendered
-//     // });
-//   },
-//   updated() {
-//     // Called after a data change causes the virtual DOM to be re-rendered and patched
-//     // eslint-disable-next-line no-console
-//     // console.log('data updated');
-//   },
-//   destroyed() {
-//     // Called after a Vue instance has been destroyed
-//   },
-// };
 </script>
 
 <style scoped>

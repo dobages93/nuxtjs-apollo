@@ -14,13 +14,6 @@ module.exports = {
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-      // {
-      //   rel: 'stylesheet',
-      //   href:
-      //     'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css',
-      //   integrity: 'sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ',
-      //   crossorigin: 'anonymous',
-      // },
     ],
   },
   /*
@@ -41,7 +34,6 @@ module.exports = {
   ** Add plugins
   */
   plugins: [
-    { ssr: false, src: "~/plugins/cache.js" },
     { ssr: false, src: "~/plugins/debug.js" },
   ],
   /*
@@ -52,11 +44,6 @@ module.exports = {
     ** Run ESLint on save
     */
     extend(config, ctx) {
-      // config.module.rules.push({
-      //   test: /\.(graphql|gql)$/,
-      //   exclude: /node_modules/,
-      //   loader: "graphql-tag/loader",
-      // });
       if (ctx.dev && ctx.isClient) {
         // config.module.rules.push({
         //   enforce: "pre",

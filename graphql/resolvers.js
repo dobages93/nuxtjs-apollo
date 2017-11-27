@@ -1,6 +1,10 @@
 // import { MongoClient, ObjectId } from "mongodb";
 import { GraphQLDateTime } from "graphql-iso-date";
 import mongoose from "mongoose";
+import debug from "debug";
+
+const logger = debug("dg:resolvers");
+const elogger = debug("dg:resolvers_error");
 
 const MONGO_URL = "mongodb://localhost:27017/nuxt-dogs";
 mongoose.connect(MONGO_URL);
@@ -38,17 +42,14 @@ export const resolvers = {
     async createBreed(obj, args) {
       const { input } = args;
       if (input) {
-        console.log(`createBreed mutation input: ${input}`);
+        logger(`createBreed mutation input: ${input}`);
         try {
           const dog = new Dogs({ breed: input });
           dog.save();
-          console.log(
-            `createBreed mutation output: ${JSON.stringify(dog.toObject())}`,
-          );
+          logger("createBreed mutation output: %j", dog.toObject());
           return dog.toObject();
-          // return { __typename: "Dog", _id: "test1234", breed: "foo", v: 0, created: new Date(), updated: null };
         } catch (error) {
-          console.log(`Dog save error: ${error.message}`);
+          elogger(`Dog save error: ${error.message}`);
           return false;
         }
       }
