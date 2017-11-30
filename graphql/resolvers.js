@@ -2,6 +2,9 @@
 import { GraphQLDateTime } from "graphql-iso-date";
 import mongoose from "mongoose";
 import debug from "debug";
+import fs from "fs";
+import path from "path";
+import Dogs from "./models/dog";
 
 const logger = debug("dg:resolvers");
 const elogger = debug("dg:resolvers_error");
@@ -13,17 +16,28 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
   // we'er connected!
   console.log("mongo connected");
+  seedData(Dogs, path.resolve(`${process.env.PWD}/graphql/data/dogs.json`), {
+    clean: false,
+  });
 });
 
-const DogSchema = new mongoose.Schema(
-  {
-    breed: String,
-    created: { type: Date, default: Date.now },
-    updated: { type: Date, default: null },
-  },
-  { versionKey: "v" },
-);
-const Dogs = mongoose.model("dogs", DogSchema);
+async function seedData(model, dataFile, opts) {
+  if (model && fs.existsSync(dataFile)) {
+    if (opts.clean && process.env.NODE_ENV === "development") {
+      await model.remove({});
+    }
+    const cnt = await model.count({});
+    if (cnt === 0) {
+      const { data } = JSON.parse(fs.readFileSync(dataFile));
+      if (data && data.length > 0) {
+        data.forEach(element => {
+          const obj = new model(element);
+          obj.save();
+        });
+      }
+    }
+  }
+}
 
 export const resolvers = {
   Date: GraphQLDateTime,

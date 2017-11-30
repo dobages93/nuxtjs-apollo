@@ -33,7 +33,7 @@
     "graphql": "^0.11.7",
     "graphql-iso-date": "^3.3.0",
     "graphql-tag": "^2.5.0",
-    "graphql-tools": "^2.8.0",
+    "graphql-tools": "^2.10.0",
     "jquery": "^3.2.1",
     "mongoose": "^4.13.5",
     "node-fetch": "^1.7.3",
@@ -41,10 +41,10 @@
     "nuxt": "^1.0.0-rc11",
     "popper.js": "^1.12.9",
     "sass-loader": "^6.0.6",
-    "supports-color": "^5.0.0",
-    "vue": "^2.5.8",
-    "vue-server-renderer": "^2.5.8",
-    "vue-template-compiler": "^2.5.8",
+    "supports-color": "^5.0.1",
+    "vue": "^2.5.9",
+    "vue-server-renderer": "^2.5.9",
+    "vue-template-compiler": "^2.5.9",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
