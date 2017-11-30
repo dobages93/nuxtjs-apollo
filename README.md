@@ -1,7 +1,7 @@
 # nuxt-demo1
 
 My Nuxt.js playground project. I have added a GraphQL server and apollo-client
-v2 to communicate with it.
+v2 to communicate with it via vue-apollo.
 
 ## Build Setup
 
