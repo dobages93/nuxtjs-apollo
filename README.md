@@ -3,6 +3,10 @@
 My Nuxt.js playground project. I have added a GraphQL server and apollo-client
 v2 to communicate with it via vue-apollo.
 
+## Requirements
+
+You need a local mongodb server running on the default port.
+
 ## Build Setup
 
 ``` bash
