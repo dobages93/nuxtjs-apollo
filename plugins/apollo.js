@@ -6,7 +6,7 @@ export default ctx => {
   const httpLink = new HttpLink({ uri: "http://localhost:4001/graphql" });
 
   // auth token
-  const token = ctx.isServer ? ctx.req.session : window.__NUXT__.state.session;
+  const token = process.server ? ctx.req.session : window.__NUXT__.state.session;
 
   // middleware
   const middlewareLink = new ApolloLink((operation, forward) => {
